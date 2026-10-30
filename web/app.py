@@ -1,12 +1,13 @@
 """CrashProof web app: FastAPI backend serving the operator UI."""
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import queue
 import threading
 import time
-from collections import defaultdict, deque
+from collections import OrderedDict, defaultdict, deque
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -79,12 +80,41 @@ def scenarios():
     return all_scenarios()
 
 
+_views: OrderedDict = OrderedDict()
+_views_lock = threading.Lock()
+
+
+def cached_view(program: str, setup: dict) -> dict:
+    """Analysis is deterministic, so identical program + setup pairs are served from memory."""
+    key = hashlib.sha256((program + json.dumps(setup, sort_keys=True)).encode()).hexdigest()
+    with _views_lock:
+        if key in _views:
+            _views.move_to_end(key)
+            return _views[key]
+    s = _setup(setup)
+    v = view_payload(program, s, analyze(program, s))
+    with _views_lock:
+        _views[key] = v
+        while len(_views) > 48:
+            _views.popitem(last=False)
+    return v
+
+
+@app.on_event("startup")
+def _warm():
+    def run():
+        for sc in all_scenarios():
+            try:
+                cached_view(sc["program"], sc["setup"])
+            except Exception:  # noqa: BLE001
+                pass
+    threading.Thread(target=run, daemon=True).start()
+
+
 @app.post("/api/analyze")
 def api_analyze(job: Job):
     _check_size(job)
-    s = _setup(job.setup)
-    rep = analyze(job.program, s)
-    return view_payload(job.program, s, rep)
+    return cached_view(job.program, job.setup)
 
 
 @app.post("/api/restart")
@@ -206,7 +236,7 @@ def api_repair(job: Job, request: Request, live: bool = False):
             recorded.append(line)
             yield f"data: {line}\n\n"
             if ev.get("type") == "done":
-                if cache and ev.get("status") == "proved":
+                if cache and ev.get("status") in ("proved", "not_proved"):
                     _cache_dir.mkdir(exist_ok=True)
                     cache.write_text("\n".join(recorded), encoding="utf-8")
                 break

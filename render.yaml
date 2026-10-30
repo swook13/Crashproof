@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: crashproof
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/status
+    envVars:
+      - key: NEBIUS_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: CRASHPROOF_LIVE_PER_HOUR
+        value: "20"

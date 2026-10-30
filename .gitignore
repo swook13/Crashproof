@@ -4,3 +4,4 @@ __pycache__/
 .playwright-mcp/
 .venv/
 .pytest_cache/
+submission/
