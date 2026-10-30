@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CrashProof</title>
+<meta name="description" content="The last check before Cycle Start: simulate a CNC program against the real machine setup, and get a proved fix from Nemotron.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='5' fill='%230d1013' stroke='%232fbf71' stroke-width='2.5'/%3E%3Cpath d='M9 17l5 5 9-12' fill='none' stroke='%232fbf71' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+<script type="importmap">
+{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+             "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M9 17l5 5 9-12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>
+      <h1>CrashProof</h1>
+      <p>The last check before Cycle Start</p>
+    </div>
+  </div>
+  <div class="status" id="status"><span class="dot"></span><span id="statusText">Checking model endpoint…</span></div>
+</header>
+
+<main class="layout">
+  <aside class="panel left">
+    <section>
+      <h2>1 · Program &amp; scenario</h2>
+      <div id="scenarios" class="scenarios"></div>
+      <p id="story" class="story"></p>
+      <details class="paste">
+        <summary>Paste your own G-code</summary>
+        <textarea id="programInput" spellcheck="false" placeholder="Paste a Fanuc-style 3-axis milling program"></textarea>
+        <button class="btn ghost small" id="useProgram">Use this program</button>
+      </details>
+    </section>
+    <section>
+      <h2>2 · Setup at the machine</h2>
+      <p class="hint">What is physically loaded right now. Lengths are what the tool setter measured; H registers are what the control holds.</p>
+      <table class="tools" id="toolTable"></table>
+      <div id="fixtureList" class="fixtures"></div>
+    </section>
+    <section class="twin">
+      <h2>3 · Read the real machine</h2>
+      <p class="hint">Photograph the control's offset page. An NVIDIA vision model reads the registers; you confirm every change.</p>
+      <div class="row">
+        <button class="btn ghost small" id="screenBtn">Upload photo</button>
+        <button class="btn ghost small" id="sampleScreenBtn">Try sample photo</button>
+        <input type="file" id="screenFile" accept="image/*" hidden>
+      </div>
+      <div id="screenResult"></div>
+      <p class="hint" style="margin-top:14px">Only know the tool's part number? Search the maker's catalog (Tavily) and take dimensions that are quoted verbatim from the source.</p>
+      <div class="row">
+        <input id="lookupQuery" class="text" placeholder="e.g. Harvey 50325-C3">
+        <button class="btn ghost small" id="lookupBtn">Look up</button>
+      </div>
+      <div id="lookupResult"></div>
+    </section>
+    <button class="btn primary big" id="runBtn">Prove it</button>
+  </aside>
+
+  <section class="panel center">
+    <div class="viewport" id="viewport">
+      <div class="legend">
+        <span><i class="sw feed"></i>Cutting</span>
+        <span><i class="sw rapid"></i>Rapid</span>
+        <span><i class="sw fix"></i>Clamps</span>
+        <span><i class="sw hit"></i>Finding</span>
+      </div>
+      <div class="viewbtns">
+        <button class="btn ghost small" data-view="iso">Iso</button>
+        <button class="btn ghost small" data-view="top">Top</button>
+        <button class="btn ghost small" data-view="front">Front</button>
+      </div>
+    </div>
+    <div class="player">
+      <button class="btn ghost small" id="playBtn" aria-label="Play">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0">
+      <span class="pos" id="posLabel">—</span>
+    </div>
+    <div class="code" id="code" tabindex="0"></div>
+  </section>
+
+  <aside class="panel right">
+    <div class="verdict" id="verdict">
+      <div class="big" id="verdictBig">—</div>
+      <div class="sub" id="verdictSub">Pick a scenario and press Prove it.</div>
+    </div>
+    <div class="actions">
+      <button class="btn danger" id="repairBtn" disabled>Repair with Nemotron</button>
+      <button class="btn ghost" id="briefBtn" disabled>Operator briefing</button>
+      <button class="btn ghost" id="certBtn" disabled>Certificate</button>
+    </div>
+    <section>
+      <h2>Findings</h2>
+      <div id="findings" class="findings"></div>
+    </section>
+    <section id="briefBox" class="brief" hidden></section>
+    <section id="repairBox" class="repair" hidden>
+      <h2>Nemotron repair loop <span class="tag" id="repairTag"></span></h2>
+      <p class="hint">Nemotron proposes edits. The simulator re-runs every candidate on the real setup and accepts only a fix that removes all findings without changing what the part looks like.</p>
+      <div id="repairLog"></div>
+      <div id="repairResult"></div>
+    </section>
+    <section>
+      <h2>Checks</h2>
+      <ul id="checks" class="checks"></ul>
+    </section>
+  </aside>
+</main>
+
+<dialog id="modal">
+  <div class="modal-body" id="modalBody"></div>
+  <form method="dialog" class="modal-actions">
+    <button class="btn ghost" id="printBtn" type="button">Print</button>
+    <button class="btn primary">Close</button>
+  </form>
+</dialog>
+
+<script type="module" src="/static/app.js"></script>
+</body>
+</html>

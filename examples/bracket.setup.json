@@ -1,0 +1,232 @@
+{
+  "name": "Actuator mount bracket OP1 (7075-T6) - 3-axis VMC, two strap clamps",
+  "stock": {
+    "name": "stock",
+    "x0": 0.0,
+    "x1": 120.0,
+    "y0": 0.0,
+    "y1": 80.0,
+    "z0": -30.0,
+    "z1": 0.0
+  },
+  "tools": {
+    "1": {
+      "kind": "flat",
+      "diameter": 10.0,
+      "flute_length": 22.0,
+      "shank_diameter": 10.0,
+      "holder_diameter": 42.0,
+      "stickout": 32.0,
+      "length": 98.214,
+      "flutes": 3,
+      "description": "10 mm 3-flute carbide end mill"
+    },
+    "2": {
+      "kind": "drill",
+      "diameter": 6.8,
+      "flute_length": 45.0,
+      "shank_diameter": 6.8,
+      "holder_diameter": 30.0,
+      "stickout": 60.0,
+      "length": 131.552,
+      "flutes": 2,
+      "description": "6.8 mm carbide drill (M8 tap drill)"
+    },
+    "3": {
+      "kind": "flat",
+      "diameter": 6.0,
+      "flute_length": 13.0,
+      "shank_diameter": 6.0,
+      "holder_diameter": 32.0,
+      "stickout": 26.0,
+      "length": 89.807,
+      "flutes": 3,
+      "description": "6 mm 3-flute carbide end mill"
+    },
+    "4": {
+      "kind": "ball",
+      "diameter": 8.0,
+      "flute_length": 16.0,
+      "shank_diameter": 8.0,
+      "holder_diameter": 32.0,
+      "stickout": 30.0,
+      "length": 92.415,
+      "flutes": 2,
+      "description": "8 mm ball end mill"
+    },
+    "5": {
+      "kind": "flat",
+      "diameter": 8.0,
+      "flute_length": 19.0,
+      "shank_diameter": 8.0,
+      "holder_diameter": 32.0,
+      "stickout": 30.0,
+      "length": 94.12,
+      "flutes": 3,
+      "description": "8 mm 3-flute carbide end mill"
+    }
+  },
+  "cam_tools": {
+    "1": {
+      "kind": "flat",
+      "diameter": 10.0,
+      "flute_length": 22.0,
+      "shank_diameter": 10.0,
+      "holder_diameter": 42.0,
+      "stickout": 32.0,
+      "length": 98.214,
+      "flutes": 3,
+      "description": "10 mm 3-flute carbide end mill"
+    },
+    "2": {
+      "kind": "drill",
+      "diameter": 6.8,
+      "flute_length": 45.0,
+      "shank_diameter": 6.8,
+      "holder_diameter": 30.0,
+      "stickout": 60.0,
+      "length": 131.552,
+      "flutes": 2,
+      "description": "6.8 mm carbide drill (M8 tap drill)"
+    },
+    "3": {
+      "kind": "flat",
+      "diameter": 6.0,
+      "flute_length": 13.0,
+      "shank_diameter": 6.0,
+      "holder_diameter": 32.0,
+      "stickout": 26.0,
+      "length": 89.807,
+      "flutes": 3,
+      "description": "6 mm 3-flute carbide end mill"
+    }
+  },
+  "wcs": {
+    "G54": [
+      -412.37,
+      -203.55,
+      -361.8
+    ]
+  },
+  "fixtures": [
+    {
+      "name": "left strap clamp",
+      "x0": -5.0,
+      "x1": 28.0,
+      "y0": 32.0,
+      "y1": 48.0,
+      "z0": 0.0,
+      "z1": 14.0
+    },
+    {
+      "name": "right strap clamp",
+      "x0": 92.0,
+      "x1": 125.0,
+      "y0": 32.0,
+      "y1": 48.0,
+      "z0": 0.0,
+      "z1": 14.0
+    },
+    {
+      "name": "machine table",
+      "x0": -150.0,
+      "x1": 270.0,
+      "y0": -80.0,
+      "y1": 160.0,
+      "z0": -80.0,
+      "z1": -30.0
+    }
+  ],
+  "features": [
+    {
+      "type": "pocket",
+      "x0": 35.0,
+      "x1": 85.0,
+      "y0": 20.0,
+      "y1": 60.0,
+      "z": -8.0,
+      "corner_r": 5.0
+    },
+    {
+      "type": "hole",
+      "x": 20.0,
+      "y": 12.0,
+      "d": 6.8,
+      "z": -20.0
+    },
+    {
+      "type": "hole",
+      "x": 100.0,
+      "y": 12.0,
+      "d": 6.8,
+      "z": -20.0
+    },
+    {
+      "type": "hole",
+      "x": 100.0,
+      "y": 68.0,
+      "d": 6.8,
+      "z": -20.0
+    },
+    {
+      "type": "hole",
+      "x": 20.0,
+      "y": 68.0,
+      "d": 6.8,
+      "z": -20.0
+    },
+    {
+      "type": "slot",
+      "x0": 40.0,
+      "y0": 8.0,
+      "x1": 80.0,
+      "y1": 8.0,
+      "w": 6.0,
+      "z": -3.0
+    }
+  ],
+  "operations": [
+    {
+      "tool": 1,
+      "name": "POCKET1",
+      "max_depth": 8.0,
+      "max_step": 4.0
+    },
+    {
+      "tool": 2,
+      "name": "DRILL1",
+      "max_depth": 20.0,
+      "max_step": 4.0
+    },
+    {
+      "tool": 3,
+      "name": "SLOT1",
+      "max_depth": 3.0,
+      "max_step": 1.5
+    }
+  ],
+  "travel": {
+    "x": [
+      -760.0,
+      0.0
+    ],
+    "y": [
+      -410.0,
+      0.0
+    ],
+    "z": [
+      -510.0,
+      0.0
+    ]
+  },
+  "home": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "spindle_diameter": 90.0,
+  "tool_in_spindle": null,
+  "primary_wcs": "G54",
+  "tolerance": 0.05,
+  "resolution": 0.5
+}

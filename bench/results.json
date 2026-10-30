@@ -1,0 +1,97 @@
+{
+  "parts": 40,
+  "seed0": 1000,
+  "clean": {
+    "n": 40,
+    "false_alarms": 0,
+    "examples": []
+  },
+  "defects": {
+    "g98_to_g99": {
+      "n": 24,
+      "detected": 24,
+      "harmless": 16,
+      "harmless_go": 16,
+      "misses": [],
+      "false_stops": []
+    },
+    "drop_tlo": {
+      "n": 40,
+      "detected": 40,
+      "harmless": 0,
+      "harmless_go": 0,
+      "misses": [],
+      "false_stops": []
+    },
+    "wrong_h_shorter": {
+      "n": 40,
+      "detected": 40,
+      "harmless": 0,
+      "harmless_go": 0,
+      "misses": [],
+      "false_stops": []
+    },
+    "rapid_plunge": {
+      "n": 40,
+      "detected": 40,
+      "harmless": 0,
+      "harmless_go": 0,
+      "misses": [],
+      "false_stops": []
+    },
+    "spindle_not_started": {
+      "n": 40,
+      "detected": 40,
+      "harmless": 0,
+      "harmless_go": 0,
+      "misses": [],
+      "false_stops": []
+    },
+    "depth_typo": {
+      "n": 40,
+      "detected": 40,
+      "harmless": 0,
+      "harmless_go": 0,
+      "misses": [],
+      "false_stops": []
+    },
+    "low_safe_z": {
+      "n": 24,
+      "detected": 24,
+      "harmless": 16,
+      "harmless_go": 16,
+      "misses": [],
+      "false_stops": []
+    },
+    "wrong_tool_in_pocket": {
+      "n": 40,
+      "detected": 40,
+      "harmless": 0,
+      "harmless_go": 0,
+      "misses": [],
+      "false_stops": []
+    },
+    "tool_too_short": {
+      "n": 24,
+      "detected": 24,
+      "harmless": 16,
+      "harmless_go": 16,
+      "misses": [],
+      "false_stops": []
+    },
+    "clamp_moved": {
+      "n": 40,
+      "detected": 40,
+      "harmless": 0,
+      "harmless_go": 0,
+      "misses": [],
+      "false_stops": []
+    }
+  },
+  "detected": 352,
+  "injected": 352,
+  "harmless": 48,
+  "harmless_go": 48,
+  "analyze_ms_median": 717,
+  "analyze_ms_max": 1545
+}
